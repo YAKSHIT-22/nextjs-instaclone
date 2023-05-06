@@ -2,7 +2,7 @@ import React from 'react'
 
 const MiniProfile = () => {
   return (
-    <div className="flex items-center justify-between  mt-14">
+    <div className="flex items-center justify-between gap-4 mt-14">
              <div className="flex items-center justify-center"><img
                 src="https://avatars.githubusercontent.com/u/92084737?v=4"
                 alt="user-image"

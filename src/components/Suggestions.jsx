@@ -22,9 +22,10 @@ export default function Suggestions() {
       {suggestions.map((suggestion) => (
         <div
           key={suggestion.id}
-          className="flex items-center justify-between mt-3"
+          className="flex items-start justify-between gap-4 mt-3"
         >
-         <div className="flex items-center justify-center">  <img
+         <div className="flex items-center justify-center">  
+         <img
             className="h-10 rounded-full border p-[2px]"
             src={`https://i.pravatar.cc/150?img=${Math.ceil(
               Math.random() * 70
@@ -33,7 +34,7 @@ export default function Suggestions() {
           />
           <div className="ml-4">
             <h2 className="font-semibold text-sm">{suggestion.username}</h2>
-            <h3 className="text-sm text-gray-400 truncate w-[14rem]">
+            <h3 className="text-sm text-gray-400 truncate w-[200px]">
               {suggestion.jobTitle}
             </h3>
           </div></div>
