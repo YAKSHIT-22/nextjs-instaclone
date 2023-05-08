@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-export default NextAuth({
+export const authOptions=({
   // Configure one or more authentication providers
   providers: [
     GoogleProvider({
@@ -10,11 +10,13 @@ export default NextAuth({
     }),
     // ...add more providers here
   ],
-  secret: process.env.SECRET,
+  //secret: process.env.SECRET,
   pages: {
-    signIn: "/auth/signin",
+    signIn: "/signin",
   },
-
+  session: {
+    strategy: 'jwt',
+  },
   callbacks: {
     async session({ session, token, user }) {
       session.user.username = session.user.name
@@ -26,3 +28,5 @@ export default NextAuth({
     },
   },
 });
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST }

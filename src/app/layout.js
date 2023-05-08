@@ -8,10 +8,14 @@ export const metadata = {
   description: 'Instagran clone made using next and tailwindcss',
 }
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children}) {
   return (
     <html lang="en">
-      <body className={poppins.className}>{children}</body>
+      <body className={poppins.className}>
+      
+        {children}
+       
+        </body>
     </html>
   )
 }
