@@ -2,8 +2,14 @@
 import Image from 'next/image'
 import React from 'react'
 import { useSession, signIn, signOut } from 'next-auth/react'
+import { useRecoilState } from "recoil";
+import { modalState } from "../../atom/modalAtom";
+import { useRouter } from 'next/navigation'
+
 const Header = () => {
   const {data: session} = useSession(); 
+  const [open, setOpen] = useRecoilState(modalState);
+  const router = useRouter();
   return (
     <div
       className="sticky top-0 z-20 flex items-center justify-center bg-white border-b shadow-sm"
@@ -18,6 +24,7 @@ const Header = () => {
             className="w-20 h-10 sm:w-24 sm:h-12"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2560px-Instagram_logo.svg.png"
             alt="logo"
+            onClick={()=>router.push('/')}
           />
         </div>
 
@@ -63,7 +70,7 @@ const Header = () => {
               />
             </svg>
           </div>
-         {session ? (<> <div className="transition-all flex items-center justify-center">
+         {session ? (<> <div onClick={() => setOpen(true)} className="transition-all flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
