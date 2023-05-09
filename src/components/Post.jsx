@@ -16,7 +16,7 @@ import {
 } from "firebase/firestore";
 const Post = ({ img, userImg, username, caption, id }) => {
   const { data: session } = useSession();
-  console.log(session);
+  
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
@@ -39,14 +39,14 @@ const Post = ({ img, userImg, username, caption, id }) => {
     );
   }, [db]);
   useEffect(() => {
-    setHasLiked(likes.findIndex((like) => like.id === session.user?.uid) !== -1);
+    setHasLiked(likes.findIndex((like) => like.id === session?.user?.uid) !== -1);
   }, [likes]);
   async function likePost() {
     if (hasLiked) {
-      await deleteDoc(doc(db, "posts", id, "likes", session.user?.uid));
+      await deleteDoc(doc(db, "posts", id, "likes", session?.user?.uid));
     } else {
-      await setDoc(doc(db, "posts", id, "likes", session.user?.uid), {
-        username: session.user?.username,
+      await setDoc(doc(db, "posts", id, "likes", session?.user?.uid), {
+        username: session?.user?.username,
       });
     }
   }
@@ -186,27 +186,29 @@ const Post = ({ img, userImg, username, caption, id }) => {
         {caption}
       </p>
       {comments.length > 0 && (
-        <div className="mx-10 max-h-24 overflow-y-scroll scrollbar-none">
+        <div className="w-full flex  flex-col py-2  px-4 max-h-24 overflow-y-scroll scrollbar-none">
           {comments.map((comment) => (
             <div
               key={comment.data().id}
-              className="flex items-center space-x-2 mb-2"
+              className="flex w-full items-center justify-between gap-2 mb-2"
             >
-              <img
-                className="h-7  rounded-full object-cover"
+              <div className="flex items-center justify-center gap-2">
+              <div className="flex items-center justify-center gap-2"><img
+                className="h-7 rounded-full object-cover"
                 src={comment.data().userImage}
                 alt="user-image"
               />
-              <p className="font-semibold">{comment.data().username}</p>
-              <p className="flex-1 truncate">{comment.data().comment}</p>
+              <p className="font-semibold">{comment.data().username}</p></div>
+              <p className="truncate">{comment.data().comment}</p></div>
               <Moment fromNow>{comment.data().timestamp?.toDate()}</Moment>
             </div>
           ))}
         </div>
       )}
       {session && (
-        <form className="flex items-center justify-between gap-1 p-4 xs:p-6">
-          <svg
+        <form className="flex items-center justify-between gap-1 sm:p-4">
+        <div className="flex items-center justify-center">  
+        <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-7 w-7"
             fill="none"
@@ -219,38 +221,22 @@ const Post = ({ img, userImg, username, caption, id }) => {
               strokeLinejoin="round"
               d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
-          </svg>
-          <input
+          </svg></div>
+          <div className="flex items-center w-full justify-start">   <input
             value={comment}
             onChange={(event) => setComment(event.target.value)}
-            className="border-none flex-1 focus:ring-0"
+            className="border-none focus:ring-0"
             type="text"
             placeholder="Enter your comment..."
-          />
-          <button
+          /></div>
+         <div className="flex items-center justify-center">   <button
             type="submit"
             onClick={sendComment}
             disabled={!comment.trim()}
             className="text-blue-400 font-bold disabled:text-blue-200"
           >
             Post
-          </button>
-          <div className="flex items-center lg:hidden justify-center p-1 rotate-45">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 btn"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-              />
-            </svg>
-          </div>
+          </button></div>
         </form>
       )}
     </div>
